@@ -32,5 +32,5 @@ jobs:
       - run: npm ci
       - run: cp firebase.json.dist firebase.json
       - run: (cd functions; npm ci && npm run lint && npm run build)
-      - run: (cd test; npm ci && npm run lint && npm run build && cp config.json.dist config.json)
+      - run: (cd test; npm ci && npm run lint && cp config.json.dist config.json)
       - run: npm run test:silent
