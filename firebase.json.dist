@@ -1,7 +1,7 @@
 {
   "firestore": {
-    "rules": "./firestore/firestore.rules",
-    "indexes": "./firestore/firestore.indexes.json"
+    "rules": "firestore/firestore.rules",
+    "indexes": "firestore/firestore.indexes.json"
   },
   "functions": {
     "predeploy": [
@@ -12,7 +12,7 @@
   },
   "hosting": {
     "target": "oskey-example",
-    "public": "./public/dist/public",
+    "public": "public/dist/public",
     "ignore": [
       "**/.*"
     ],
@@ -49,6 +49,9 @@
     },
     "firestore": {
       "port": 18002
+    },
+    "hosting": {
+      "port": 18004
     },
     "storage": {
       "port": 18005
