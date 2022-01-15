@@ -14,7 +14,6 @@ import { OSKUserRoutingModule } from './user-routing.module';
   ],
   imports: [
     CommonModule,
-
     OSKCoreModule,
     OSKUserRoutingModule
   ]

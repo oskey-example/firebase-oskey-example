@@ -6,10 +6,10 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OSKAuthSignInFormComponent } from './components/auth-sign-in-form/auth-sign-in-form.component';
 import { OSKAuthRoutingModule } from './auth-routing.module';
 import { OSKCoreModule } from '../core/core.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OSKAuthSignInFormComponent } from './components/auth-sign-in-form/auth-sign-in-form.component';
 import { OSKAuthSignUpFormComponent } from './components/auth-sign-up-form/auth-sign-up-form.component';
 
 @NgModule({

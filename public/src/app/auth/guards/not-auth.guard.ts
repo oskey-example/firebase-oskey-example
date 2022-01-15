@@ -26,10 +26,10 @@ export class OSKNotAuthGuard implements CanActivate {
   ): Observable<boolean> {
     return this.authService.isAuthenticated$.pipe(
       take(1),
-      map(isAuthenticated => !isAuthenticated),
+      map((isAuthenticated) => !isAuthenticated),
       tap(isNotAuthenticated => {
         if (!isNotAuthenticated) {
-          this.router.navigate(['/']);
+          this.router.navigate(['/app/welcome']);
         }
       })
     );

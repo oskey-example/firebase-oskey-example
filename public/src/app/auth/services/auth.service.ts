@@ -30,17 +30,21 @@ export class OSKAuthService {
   }
 
   signInWithEmailAndPassword(email: string, password: string) {
-    // TODO: Improve handling of sign in failures
     signInWithEmailAndPassword(this.auth, email, password)
       .then(_ => { })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        throw (err);
+      });
   }
 
   createUserWithEmailAndPassword(email: string, password: string) {
-    // TODO: Improve handling of sign up failures
     createUserWithEmailAndPassword(this.auth, email, password)
       .then(_ => { })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        throw (err);
+      });
   }
 
   signOut() {

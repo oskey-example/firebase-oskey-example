@@ -28,13 +28,13 @@ export class OSKAuthSignInFormComponent implements OnDestroy {
     private router: Router,
     private authService: OSKAuthService) {
 
-    this.isAuthenticatedSub = this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
-      if (isAuthenticated) this.router.navigate([this.returnUrl]);
-    });
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.returnUrl;
     this.form = this.formBuilder.group({
       email: ['', Validators.email],
       password: ['', Validators.required]
+    });
+    this.isAuthenticatedSub = this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) this.router.navigate([this.returnUrl]);
     });
   }
 
@@ -50,6 +50,7 @@ export class OSKAuthSignInFormComponent implements OnDestroy {
         const email = this.form.get('email')?.value ?? '';
         const password = this.form.get('password')?.value ?? '';
         await this.authService.signInWithEmailAndPassword(email, password);
+        this.router.navigate([this.returnUrl]);
       } catch (err) {
         this.signInHasFailed = true;
       }

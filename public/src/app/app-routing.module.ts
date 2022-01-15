@@ -6,21 +6,27 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { OSKEitherNotAuthOrAuthAndCompletedGuard } from './auth/guards/either-not-auth-or-auth-and-completed.guard';
+import { OSKAuthAndCompletedGuard } from './auth/guards/auth-and-completed.guard';
+import { OSKNotAuthGuard } from './auth/guards/not-auth.guard';
 import { OSKWelcomeComponent } from './welcome/components/welcome/welcome.component';
 
 const routes: Routes = [
-  { path: '', component: OSKWelcomeComponent, canActivate: [OSKEitherNotAuthOrAuthAndCompletedGuard] },
+  { path: '', component: OSKWelcomeComponent, canActivate: [OSKNotAuthGuard] },
+  { path: 'app/welcome', component: OSKWelcomeComponent, canActivate: [OSKAuthAndCompletedGuard] },
   {
-    path: 'auth', loadChildren: () => import('./auth/auth.module').then(module => module.OSKAuthModule)
+    path: 'auth', loadChildren: () => import('./auth/auth.module').then((module) => module.OSKAuthModule)
   },
   {
-    path: 'user', loadChildren: () => import('./user/user.module').then(module => module.OSKUserModule)
+    path: 'user', loadChildren: () => import('./user/user.module').then((module) => module.OSKUserModule)
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [
+    OSKNotAuthGuard,
+    OSKAuthAndCompletedGuard
+  ]
 })
 export class OSKAppRoutingModule { }
