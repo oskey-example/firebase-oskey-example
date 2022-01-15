@@ -2,31 +2,43 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
+    // Deny first
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // User signed in
+    // Function to check if user is signed in
     function isSignedIn() {
       return request.auth != null;
     }
 
-    // Does the logged-in user match the requested userId?
+    // Function to check if user is same as authenticated one
     function isUser(userId) {
       return request.auth.uid == userId;
     }
 
+    // User collection
     match /users/{userId} {
+      // Only allow read and update on user profile
       allow read, update: if (isSignedIn() && isUser(userId));
       allow create, delete: if false;
 
       // User status
       match /status/{statusId} {
+        // Only allow read (updates are triggered in background)
         allow read: if (isSignedIn() && isUser(userId));
         allow write: if false
       }
 
+      // User tasks
       match /tasks/{taskId} {
+        // Allow read/write
+        allow read, write: if (isSignedIn() && isUser(userId));
+      }
+
+      // User completed tasks
+      match /completedTasks/{completedTaskId} {
+        // Allow read/write
         allow read, write: if (isSignedIn() && isUser(userId));
       }
     }

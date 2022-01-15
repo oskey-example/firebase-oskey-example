@@ -41,7 +41,8 @@ async function prepareUnitTests(apps: OSKUnitTestApps) {
 
   afterEach(async () => { await sleep(500); });
 
-  describe('User creation', async () => { specs.testUserCreation(apps); });
+  describe('User', async () => { specs.testUser(apps); });
+  describe('User task', async () => { specs.testUserTask(apps); });
 }
 
 /**

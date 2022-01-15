@@ -4,6 +4,6 @@
  * @license SEE LICENSE IN LICENSE.md
  */
 
-export interface OSKUserPrivateProfileModel {
+export type OSKUserPrivateProfileModel = {
   fullName: string;
 }

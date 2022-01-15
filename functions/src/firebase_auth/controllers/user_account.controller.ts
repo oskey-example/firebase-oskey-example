@@ -24,7 +24,7 @@ export class OSKUserAccountController {
     };
 
     const userStatus: OSKUserStatusDocument = {
-      isProfileComplete: false,
+      isProfileComplete: user.publicProfile.displayName !== '' && user.privateProfile.fullName !== '',
       creationDate: ts
     };
 

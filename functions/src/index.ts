@@ -35,12 +35,26 @@ export const onUserAccountDeleted = functions
  * DB Trigger : User
  ***************************************************************************** */
 
-export const onUserCreated = functions
-  .region('europe-west1')
-  .firestore.document('/users/{userId}')
-  .onCreate((snapshot, context) => OSKFirebaseFirestoreModule.userController.onCreate(snapshot, context));
-
 export const onUserUpdated = functions
   .region('europe-west1')
   .firestore.document('/users/{userId}')
   .onUpdate((snapshot, context) => OSKFirebaseFirestoreModule.userController.onUpdate(snapshot, context));
+
+/** *****************************************************************************
+ * DB Trigger : User Task
+ ***************************************************************************** */
+
+export const onUserTaskCreated = functions
+  .region('europe-west1')
+  .firestore.document('/users/{userId}/tasks/{taskId}')
+  .onCreate((snapshot, context) => OSKFirebaseFirestoreModule.userTaskController.onCreate(snapshot, context));
+
+export const onUserTaskUpdated = functions
+  .region('europe-west1')
+  .firestore.document('/users/{userId}/tasks/{taskId}')
+  .onUpdate((snapshot, context) => OSKFirebaseFirestoreModule.userTaskController.onUpdate(snapshot, context));
+
+export const onUserCompletedTaskUpdated = functions
+  .region('europe-west1')
+  .firestore.document('/users/{userId}/completedTasks/{completedTaskId}')
+  .onUpdate((snapshot, context) => OSKFirebaseFirestoreModule.userCompletedTaskController.onUpdate(snapshot, context));

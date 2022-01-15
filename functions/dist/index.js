@@ -5,7 +5,7 @@
  * @license SEE LICENSE IN LICENSE.md
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onUserUpdated = exports.onUserCreated = exports.onUserAccountDeleted = exports.onUserAccountCreated = void 0;
+exports.onUserCompletedTaskUpdated = exports.onUserTaskUpdated = exports.onUserTaskCreated = exports.onUserUpdated = exports.onUserAccountDeleted = exports.onUserAccountCreated = void 0;
 const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 const firebase_auth_1 = require("./firebase_auth");
@@ -30,12 +30,23 @@ exports.onUserAccountDeleted = functions
 /** *****************************************************************************
  * DB Trigger : User
  ***************************************************************************** */
-exports.onUserCreated = functions
-    .region('europe-west1')
-    .firestore.document('/users/{userId}')
-    .onCreate((snapshot, context) => firebase_firestore_1.OSKFirebaseFirestoreModule.userController.onCreate(snapshot, context));
 exports.onUserUpdated = functions
     .region('europe-west1')
     .firestore.document('/users/{userId}')
     .onUpdate((snapshot, context) => firebase_firestore_1.OSKFirebaseFirestoreModule.userController.onUpdate(snapshot, context));
+/** *****************************************************************************
+ * DB Trigger : User Task
+ ***************************************************************************** */
+exports.onUserTaskCreated = functions
+    .region('europe-west1')
+    .firestore.document('/users/{userId}/tasks/{taskId}')
+    .onCreate((snapshot, context) => firebase_firestore_1.OSKFirebaseFirestoreModule.userTaskController.onCreate(snapshot, context));
+exports.onUserTaskUpdated = functions
+    .region('europe-west1')
+    .firestore.document('/users/{userId}/tasks/{taskId}')
+    .onUpdate((snapshot, context) => firebase_firestore_1.OSKFirebaseFirestoreModule.userTaskController.onUpdate(snapshot, context));
+exports.onUserCompletedTaskUpdated = functions
+    .region('europe-west1')
+    .firestore.document('/users/{userId}/completedTasks/{completedTaskId}')
+    .onUpdate((snapshot, context) => firebase_firestore_1.OSKFirebaseFirestoreModule.userCompletedTaskController.onUpdate(snapshot, context));
 //# sourceMappingURL=index.js.map

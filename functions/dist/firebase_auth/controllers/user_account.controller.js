@@ -20,7 +20,7 @@ class OSKUserAccountController {
             creationDate: ts
         };
         const userStatus = {
-            isProfileComplete: false,
+            isProfileComplete: user.publicProfile.displayName !== '' && user.privateProfile.fullName !== '',
             creationDate: ts
         };
         await db.collection(`/users/${userAccount.uid}/status`).doc(userAccount.uid).create(userStatus);

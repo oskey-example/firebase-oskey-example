@@ -6,7 +6,9 @@
 
 import { firestore } from 'firebase-admin';
 
-export type OSKUserStatusDocument = {
-  isProfileComplete: boolean;
+export type OSKUserTaskDocument = {
+  title: string;
+  note: string;
+  status: 0 | 1;
   creationDate: firestore.Timestamp;
 }

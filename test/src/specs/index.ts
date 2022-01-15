@@ -4,4 +4,5 @@
  * @license SEE LICENSE IN LICENSE.md
  */
 
-export { testUserCreation } from './user/user_creation.spec';
+export { testUser } from './user.spec';
+export { testUserTask } from './user_task.spec';
