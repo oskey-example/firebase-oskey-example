@@ -6,20 +6,20 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OSKUserFirstConnectionWizzardComponent } from './user-first-connection-wizzard.component';
+import { OSKUserProfileCompletionFormComponent } from './user-profile-completion-form.component';
 
 describe('OSKUserFirstConnectionWizzardComponent', () => {
-  let component: OSKUserFirstConnectionWizzardComponent;
-  let fixture: ComponentFixture<OSKUserFirstConnectionWizzardComponent>;
+  let component: OSKUserProfileCompletionFormComponent;
+  let fixture: ComponentFixture<OSKUserProfileCompletionFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OSKUserFirstConnectionWizzardComponent]
+      declarations: [OSKUserProfileCompletionFormComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OSKUserFirstConnectionWizzardComponent);
+    fixture = TestBed.createComponent(OSKUserProfileCompletionFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

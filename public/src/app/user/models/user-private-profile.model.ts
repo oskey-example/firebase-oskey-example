@@ -5,5 +5,5 @@
  */
 
 export interface OSKUserPrivateProfile {
-  fullname: string;
+  fullName: string;
 }

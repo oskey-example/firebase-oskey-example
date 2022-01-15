@@ -66,7 +66,6 @@ import { environment } from 'src/environments/environment';
     MatCardModule,
     MatSlideToggleModule,
     MatSelectModule,
-    // MatOptionModule
   ]
 })
 export class OSKCoreModule { }

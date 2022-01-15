@@ -9,7 +9,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { OSKUserProfileComponent } from './components/user-profile/user-profile.component';
-import { OSKUserFirstConnectionWizzardComponent } from './components/user-first-connection-wizzard/user-first-connection-wizzard.component';
+import { OSKUserProfileCompletionFormComponent } from './components/user-profile-completion-form/user-profile-completion-form.component';
 import { OSKUserWaitComponent } from './components/user-wait/user-wait.component';
 
 import { OSKAuthAndCompletedGuard } from '../auth/guards/auth-and-completed.guard';
@@ -17,14 +17,14 @@ import { OSKAuthAndNotAccountCreatedGuard } from '../auth/guards/auth-and-not-ac
 import { OSKAuthAndNotCompletedGuard } from '../auth/guards/auth-and-not-completed.guard';
 
 const routes: Routes = [
+  // {
+  //   path: 'profile',
+  //   component: OSKUserProfileComponent,
+  //   canActivate: [OSKAuthAndCompletedGuard]
+  // },
   {
-    path: 'profile',
-    component: OSKUserProfileComponent,
-    canActivate: [OSKAuthAndCompletedGuard]
-  },
-  {
-    path: 'first-connection-wizzard',
-    component: OSKUserFirstConnectionWizzardComponent,
+    path: 'profileCompletion',
+    component: OSKUserProfileCompletionFormComponent,
     canActivate: [OSKAuthAndNotCompletedGuard]
   },
   {

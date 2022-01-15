@@ -57,8 +57,9 @@ export class OSKAuthAndNotCompletedGuard implements CanActivate {
             //Step 3) Check if the user profile is incomplete
             return this.userStatusService.isUserProfileComplete$.pipe(
               take(1),
-              tap(isUserProfileCompleted => {
-                if (isUserProfileCompleted) {
+              map((isUserProfileCompleted) => !isUserProfileCompleted),
+              tap(isUserProfileNotCompleted => {
+                if (!isUserProfileNotCompleted) {
                   this.router.navigate(['/']);
                 }
               })

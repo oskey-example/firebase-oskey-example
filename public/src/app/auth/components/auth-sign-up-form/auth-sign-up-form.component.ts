@@ -18,7 +18,7 @@ import { OSKAuthService } from '../../services/auth.service';
 })
 export class OSKAuthSignUpFormComponent implements OnDestroy {
   public form: FormGroup;
-  public signInHasFailed: boolean = false;
+  public signUpHasFailed: boolean = false;
   // private formSubmitAttempt: boolean = false;
   private returnUrl: string = '/';
   private isAuthenticatedSub: Subscription;
@@ -45,7 +45,7 @@ export class OSKAuthSignUpFormComponent implements OnDestroy {
   }
 
   async onSignUp() {
-    this.signInHasFailed = false;
+    this.signUpHasFailed = false;
     // this.formSubmitAttempt = false;
     if (this.form.valid) {
       try {
@@ -54,7 +54,7 @@ export class OSKAuthSignUpFormComponent implements OnDestroy {
         await this.authService.createUserWithEmailAndPassword(email, password);
         this.router.navigate([this.returnUrl]);
       } catch (err) {
-        this.signInHasFailed = true;
+        this.signUpHasFailed = true;
       }
     } else {
       // this.formSubmitAttempt = true;

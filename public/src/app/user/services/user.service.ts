@@ -5,7 +5,7 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { doc, docSnapshots, Firestore, Timestamp } from '@angular/fire/firestore';
+import { doc, docSnapshots, Firestore, setDoc, Timestamp } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
 import { OSKUser } from '../models/user.model';
 
 import { OSKAuthService } from 'src/app/auth/services/auth.service';
+import { docData } from 'rxfire/firestore';
+import { OSKUserPublicProfile } from '../models/user-public-profile.model';
+import { OSKUserPrivateProfile } from '../models/user-private-profile.model';
 
 @Injectable({
   providedIn: 'root'
@@ -148,6 +151,17 @@ export class OSKUserService implements OnDestroy {
           }
         })
       );
+  }
+
+  async updateUser(displayName: string, fullName: string) {
+    const publicProfile: OSKUserPublicProfile = {
+      displayName: displayName
+    };
+    const privateProfile: OSKUserPrivateProfile = {
+      fullName: fullName
+    };
+    const docRef = doc(this.firestore, `/users/${this.userId!}`);
+    await setDoc(docRef, { publicProfile: publicProfile, privateProfile: privateProfile }, { merge: true });
   }
 
   // get userPublicProfile$(): Observable<OSKUserPublicProfile> {

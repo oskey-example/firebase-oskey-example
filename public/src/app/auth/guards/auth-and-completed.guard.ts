@@ -59,7 +59,7 @@ export class OSKAuthAndCompletedGuard implements CanActivate {
               take(1),
               tap(isUserProfileCompleted => {
                 if (!isUserProfileCompleted) {
-                  this.router.navigate(['/user/first-connection-wizzard']);
+                  this.router.navigate(['/user/profileCompletion']);
                 }
               })
             );
