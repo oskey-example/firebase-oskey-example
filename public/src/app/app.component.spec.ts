@@ -1,3 +1,9 @@
+/**
+ * firebase-oskey-example
+ * @copyright (c) 2020, OSkey.io. MIT License.
+ * @license SEE LICENSE IN LICENSE.md
+*/
+
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OSKAppComponent } from './app.component';

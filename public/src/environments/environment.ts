@@ -5,14 +5,13 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: '<your-key>',
+    apiKey: 'AIzaSyDqCdEczo09MHXulUWO831NQr2DPpy0nUI',
     authDomain: 'oskey-example.firebaseapp.com',
     projectId: 'oskey-example',
     storageBucket: 'oskey-example.appspot.com',
-    messagingSenderId: '<your-messaging-sender-id>',
-    appId: '<your-api-id>'
-  },
-  userFirebaseEmulator: false
+    messagingSenderId: '906477067135',
+    appId: '1:906477067135:web:f60aa464e80cf69f8ad84a'
+  }
 };
 
 /*

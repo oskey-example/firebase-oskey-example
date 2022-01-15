@@ -1,3 +1,9 @@
+/**
+ * firebase-oskey-example
+ * @copyright (c) 2020, OSkey.io. MIT License.
+ * @license SEE LICENSE IN LICENSE.md
+*/
+
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 

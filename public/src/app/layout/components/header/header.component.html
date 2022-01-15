@@ -1,0 +1,17 @@
+<header>
+  <mat-toolbar color="primary">
+    <button mat-icon-button routerLink="/">
+      <mat-icon>home</mat-icon>
+    </button>
+    <span>Example</span>
+    <span class="toolbar-spacer"></span>
+    <button mat-button routerLink="/auth/signIn" *ngIf="!isAuthenticated">
+      <mat-icon>power_settings_new</mat-icon>
+      Sign in
+    </button>
+    <button mat-button *ngIf="isAuthenticated" (click)="onSignOut()">
+      <mat-icon>exit_to_app</mat-icon>
+      Sign out
+    </button>
+  </mat-toolbar>
+</header>

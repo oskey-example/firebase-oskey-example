@@ -1,3 +1,9 @@
+/**
+ * firebase-oskey-example
+ * @copyright (c) 2020, OSkey.io. MIT License.
+ * @license SEE LICENSE IN LICENSE.md
+ */
+
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
 import 'zone.js/testing';

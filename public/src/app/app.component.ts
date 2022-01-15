@@ -1,3 +1,9 @@
+/**
+ * firebase-oskey-example
+ * @copyright (c) 2020, OSkey.io. MIT License.
+ * @license SEE LICENSE IN LICENSE.md
+ */
+
 import { Component } from '@angular/core';
 // import { AngularFirestore } from '@angular/fire/firestore';
 
