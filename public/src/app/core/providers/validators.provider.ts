@@ -4,15 +4,15 @@
  * @license SEE LICENSE IN LICENSE.md
  */
 
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 export class OSKValidators {
 
   constructor() { }
 
-  static mustMatch(matchingControlName: string) {
+  static mustMatch(matchingControlName: string): ValidatorFn {
     return (control: AbstractControl) => {
-      //safety check
+
       if (control.value === control.parent?.get(matchingControlName)?.value) { return null }
       return { error: 'Passwords don\'t match' };
     };

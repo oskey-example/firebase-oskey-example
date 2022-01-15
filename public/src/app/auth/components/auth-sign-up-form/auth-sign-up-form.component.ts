@@ -35,8 +35,8 @@ export class OSKAuthSignUpFormComponent implements OnDestroy {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.returnUrl;
     this.form = this.formBuilder.group({
       email: ['', Validators.email],
-      password: ['', Validators.required, Validators.minLength(6)],
-      passwordRepeat: ['', Validators.required, OSKValidators.mustMatch('password')]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      passwordRepeat: ['', [Validators.required, OSKValidators.mustMatch('password')]]
     });
   }
 
