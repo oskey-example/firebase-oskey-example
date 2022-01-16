@@ -30,6 +30,7 @@ jobs:
       - run: npm ci
       - run: cp firebase.json.dist firebase.json
       - run: (cd functions; npm ci && npm run lint && npm run build)
+      - run: (cd public; npm ci && npx ng lint && npx ng build)
       - run: (cd test; npm ci && npm run lint && cp config.json.dist config.json)
       - run: npm run test:silent
 
@@ -48,6 +49,11 @@ jobs:
       - run: npm ci
       - run: cp firebase.json.dist firebase.json
       - run: (cd functions; npm ci)
+      - run: (cd public; npm ci)
+      - run: (cd public/src/environments; sed -e 's/FIREBASE_API_KEY/'"$FIREBASE_API_KEY"'/g'  -e 's/FIREBASE_APP_ID/'"$FIREBASE_APP_ID"'/g' -e 's/FIREBASE_MESSAGING_SENDER_ID/'"$FIREBASE_MESSAGING_SENDER_ID"'/g' environment.prod.ts > new-environment.prod.ts; mv new-environment.prod.ts environment.prod.ts)
       - run: npm run deploy:ci
         env:
           FIREBASE_TOKEN: ${{ secrets.firebase_token }}
+          FIREBASE_API_KEY: ${{ secrets.firebase_api_key }}
+          FIREBASE_APP_ID: ${{ secrets.firebase_app_id }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.firebase_messaging_sender_id }}
