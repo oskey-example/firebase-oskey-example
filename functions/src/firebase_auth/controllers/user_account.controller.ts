@@ -43,6 +43,18 @@ export class OSKUserAccountController {
       // Delete status
       await db.collection(`/users/${user.uid}/status`).doc(user.uid).delete();
 
+      // Delete tasks
+      const taskDocs = await db.collection(`/users/${user.uid}/tasks`).listDocuments();
+      for (const taskDoc of taskDocs) {
+        await db.collection(`/users/${user.uid}/tasks`).doc(taskDoc.id).delete();
+      }
+
+      // Delete completed tasks
+      const completedTaskDocs = await db.collection(`/users/${user.uid}/tasks`).listDocuments();
+      for (const completedTaskDoc of completedTaskDocs) {
+        await db.collection(`/users/${user.uid}/tasks`).doc(completedTaskDoc.id).delete();
+      }
+
       // At the end, delete the user record
       await db.collection('/users').doc(user.uid).delete();
     }
