@@ -7,13 +7,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OSKWelcomeComponent } from './components/welcome/welcome.component';
+import { OSKCoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [
     OSKWelcomeComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    OSKCoreModule
   ]
 })
 export class OSKWelcomeModule { }

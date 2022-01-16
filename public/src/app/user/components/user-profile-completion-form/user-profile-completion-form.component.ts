@@ -9,10 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { OSKUserService } from '../../services/user.service';
-import { OSKUser } from '../../models/user.model';
 import { OSKAuthService } from 'src/app/auth/services/auth.service';
 import { OSKUserStatusService } from '../../services/user-status.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'osk-user-profile-completion-form',
@@ -33,7 +32,6 @@ export class OSKUserProfileCompletionFormComponent implements OnDestroy {
     private authService: OSKAuthService,
     private userService: OSKUserService,
     private userStatusService: OSKUserStatusService,
-    private route: ActivatedRoute,
     private router: Router
   ) {
 

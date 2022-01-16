@@ -11,6 +11,7 @@ import { OSKAppRoutingModule } from './app-routing.module';
 import { OSKAppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OSKLayoutModule } from './layout/layout.module';
+import { OSKWelcomeModule } from './welcome/welcome.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { OSKLayoutModule } from './layout/layout.module';
     BrowserModule,
     BrowserAnimationsModule,
     OSKAppRoutingModule,
-    OSKLayoutModule
+    OSKLayoutModule,
+    OSKWelcomeModule
   ],
   providers: [],
   bootstrap: [OSKAppComponent]
