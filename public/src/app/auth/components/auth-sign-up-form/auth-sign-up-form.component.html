@@ -2,6 +2,7 @@
   <mat-card-title>Sign up with email & password</mat-card-title>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSignUp()">
+      <mat-error *ngIf="signUpHasFailed"> Something went wrong </mat-error>
       <mat-error *ngIf="signUpHasFailed">
         The username and password were not recognised
       </mat-error>

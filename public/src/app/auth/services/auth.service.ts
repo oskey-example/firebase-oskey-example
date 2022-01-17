@@ -29,22 +29,12 @@ export class OSKAuthService {
     return authState(this.auth);
   }
 
-  signInWithEmailAndPassword(email: string, password: string) {
-    signInWithEmailAndPassword(this.auth, email, password)
-      .then(_ => { })
-      .catch(err => {
-        console.error(err);
-        throw (err);
-      });
+  async signInWithEmailAndPassword(email: string, password: string) {
+    return await signInWithEmailAndPassword(this.auth, email, password)
   }
 
-  createUserWithEmailAndPassword(email: string, password: string) {
-    createUserWithEmailAndPassword(this.auth, email, password)
-      .then(_ => { })
-      .catch(err => {
-        console.error(err);
-        throw (err);
-      });
+  async createUserWithEmailAndPassword(email: string, password: string) {
+    return await createUserWithEmailAndPassword(this.auth, email, password)
   }
 
   signOut() {

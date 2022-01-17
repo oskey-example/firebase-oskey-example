@@ -5,7 +5,7 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { doc, docSnapshots, Firestore, setDoc, Timestamp } from '@angular/fire/firestore';
+import { doc, docSnapshots, Firestore, setDoc, Timestamp, DocumentReference } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -143,7 +143,7 @@ export class OSKUserService implements OnDestroy {
               email: data['email']!,
               publicProfile: data['publicProfile']!,
               privateProfile: data['privateProfile']!,
-              creationDate: (data['creationDate'] as Timestamp).toDate() ?? Date.now(),
+              creationDate: Date.now(),
             };
             return user;
           } else {
@@ -152,6 +152,17 @@ export class OSKUserService implements OnDestroy {
         })
       );
   }
+  
+  setDocWithTimeout = (ref: DocumentReference, data: object, options?: { timeout: number}) => {
+    const timeoutMS = options && options.timeout || 1000;
+    const setDocPromise = setDoc(ref, data);
+  
+    return Promise.race([
+      setDocPromise.then(() => ({ timeout: false })),
+      new Promise((resolve, reject) => setTimeout(resolve, timeoutMS, { timeout: true, promise: setDocPromise }))
+    ])
+  }
+
 
   async updateUser(displayName: string, fullName: string) {
     const publicProfile: OSKUserPublicProfile = {
@@ -161,7 +172,7 @@ export class OSKUserService implements OnDestroy {
       fullName: fullName
     };
     const docRef = doc(this.firestore, `/users/${this.userId!}`);
-    await setDoc(docRef, { publicProfile: publicProfile, privateProfile: privateProfile }, { merge: true });
+    return await this.setDocWithTimeout(docRef, { publicProfile: publicProfile, privateProfile: privateProfile });
   }
 
   // get userPublicProfile$(): Observable<OSKUserPublicProfile> {
