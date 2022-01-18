@@ -10,7 +10,7 @@ import { OSKUserPublicProfile } from './user-public-profile.model';
 export interface OSKUser {
   userId: string;
   email: string;
-  creationDate: Date;
+  creationDate: Number;
   publicProfile: OSKUserPublicProfile;
   privateProfile: OSKUserPrivateProfile;
 }
