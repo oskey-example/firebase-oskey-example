@@ -21,7 +21,6 @@ services:
     #   - 19004
     #   - 19005
     #   - 19006
-    #   - 19007
     volumes:
       - ..:/workspace
       - firebase-oskey-example-devenv-home:/home
