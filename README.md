@@ -1,7 +1,6 @@
 [![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
-[![node](https://img.shields.io/badge/node-16.x-233056)](https://nodejs.org)
+[![node](https://img.shields.io/badge/node-18.x-233056)](https://nodejs.org)
 [![typescript](https://img.shields.io/badge/typescript-only-4278c2)](https://www.typescriptlang.org)
-[![angular](https://img.shields.io/badge/angular-13.x-cb2b39)](https://angular.io)
 
 # firebase-oskey-example
 
@@ -24,16 +23,15 @@ It is provided under the MIT License.
 
 ### Requirements
 
-- [node](https://nodejs.org): v16.x (latest LTS version supported by Firebase)
-- [firebase-tools](https://www.npmjs.com/package/firebase-tools): v10
-- [@angular/cli](https://www.npmjs.com/package/@angular/cli): v13
+- [node](https://nodejs.org): v18.x (latest LTS version supported by Firebase)
+- [firebase-tools](https://www.npmjs.com/package/firebase-tools): v11
 
-Note: `firebase-tools` and `@angular/cli` are not required to be installed
-globally, using `npx` command will call the one installed with the program
-dependencies.
+Using the VS Code dev container will ensure all requirements are met.
 
-- `npx firebase ...` from the root of the repository for `firebase-tools`
-- `npx ng ...` in the `public` folder for `@angular/cli`
+Note: `firebase-tools` are not required to be installed globally, using `npx`
+command will call the one installed with the program dependencies. The dev
+container provides a `firebase-cli` that is a shortcuts to `npx firebase` and
+that can detect if a token is set in the `env`.
 
 ### Clone and download dependencies
 
@@ -59,15 +57,129 @@ npm run lint
 npm run build
 ```
 
-### Build the hosted frontend app
+### Create a Firebase project and update configuration
 
-The frontend app must be build prior to running emulator. To do so go into
-the `public` folder and:
+Prior to running the emulator, it is required to login. However you probably
+won't have access to the Firebase project set by default, therefor you need to
+create a project on Firebase (a Google email account is required for that). On
+you Firebase project you need to activate:
 
-```sh
-npm ci
-npm run lint
-npm run build
+- Authentication (email/password)
+- Firestore
+- Cloud Function (it will ask you to have a `Blaze` plan, but it should not cost
+  you anything unless you deploy and start having many request. For your own
+  testing you should not exceed the free tier, but be careful)
+- Storage
+- Hosting
+- Dynamic link
+
+Once it is done, you need to add in `.firebaserc` a configuration for your
+project. For example (replace `PROJECT_NAME` by you project name):
+
+```json
+{
+  "projects": {
+    "default": "oskey-example",
+    "my-project": "PROJECT_NAME"
+  },
+  "targets": {
+    "oskey-example": {
+      "hosting": {
+        "oskey-example": ["dynlink-oskey-example"]
+      }
+    },
+    "PROJECT_NAME": {
+      "hosting": {
+        "PROJECT_NAME": ["dynlink-PROJECT_NAME"]
+      }
+    }
+  }
+}
+```
+
+Finaly you need to update `firebase.json`. For example (replace `PROJECT_NAME`
+by you project name):
+
+```json
+{
+  "firestore": {
+    "rules": "firestore/firestore.rules",
+    "indexes": "firestore/firestore.indexes.json"
+  },
+  "functions": {
+    "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run lint", "npm --prefix \"$RESOURCE_DIR\" run build"],
+    "source": "./functions"
+  },
+  "hosting": [
+    {
+      "target": "oskey-example",
+      "appAssociation": "AUTO",
+      "rewrites": [
+        {
+          "source": "/app/**",
+          "dynamicLinks": true
+        },
+        {
+          "source": "/auth/**",
+          "dynamicLinks": true
+        }
+      ]
+    },
+    {
+      "target": "PROJECT_NAME",
+      "appAssociation": "AUTO",
+      "rewrites": [
+        {
+          "source": "/app/**",
+          "dynamicLinks": true
+        },
+        {
+          "source": "/auth/**",
+          "dynamicLinks": true
+        }
+      ]
+    }
+  ],
+  "storage": {
+    "rules": "storage/storage.rules"
+  },
+  "emulators": {
+    "ui": {
+      "enabled": true,
+      "host": "0.0.0.0",
+      "port": 19000
+    },
+    "auth": {
+      "host": "0.0.0.0",
+      "port": 19001
+    },
+    "firestore": {
+      "host": "0.0.0.0",
+      "port": 19002,
+      "websocketPort": 19097
+    },
+    "functions": {
+      "host": "0.0.0.0",
+      "port": 19003
+    },
+    "storage": {
+      "host": "0.0.0.0",
+      "port": 19005
+    },
+    "hub": {
+      "host": "0.0.0.0",
+      "port": 19006
+    },
+    "eventarc": {
+      "host": "0.0.0.0",
+      "port": 18098
+    },
+    "logging": {
+      "host": "0.0.0.0",
+      "port": 18099
+    }
+  }
+}
 ```
 
 ### Run the emulator
@@ -257,18 +369,18 @@ The emulators will use the following port (if you use the provided configuration
 
 | Emulator        | Port  |
 | --------------- | ----- |
-| Auth            | 18001 |
-| Cloud Firestore | 18002 |
-| Cloud Functions | 18003 |
-| Cloud Hosting   | 18004 |
-| Cloud Storage   | 18005 |
+| Auth            | 19001 |
+| Cloud Firestore | 19002 |
+| Cloud Functions | 19003 |
+| Pub/Sub         | 19004 |
+| Cloud Storage   | 19005 |
 
 These additional ports will be run for the emulator engine itself.
 
 | Additional server | Port  |
 | ----------------- | ----- |
-| Emulator UI       | 18000 |
-| Emulator Hub      | 18099 |
+| Emulator UI       | 19000 |
+| Emulator Hub      | 19006 |
 
 ## Deployment to Firebase
 

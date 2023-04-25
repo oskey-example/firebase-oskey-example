@@ -10,9 +10,6 @@
     ],
     "source": "./functions"
   },
-  "storage": {
-    "rules": "storage/storage.rules"
-  },
   "hosting": [
     {
       "target": "oskey-example",
@@ -29,6 +26,9 @@
       ]
     }
   ],
+  "storage": {
+    "rules": "storage/storage.rules"
+  },
   "emulators": {
     "ui": {
       "enabled": true,

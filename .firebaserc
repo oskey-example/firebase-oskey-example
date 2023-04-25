@@ -6,7 +6,7 @@
     "oskey-example": {
       "hosting": {
         "oskey-example": [
-          "oskey-example"
+          "dynlink-oskey-example"
         ]
       }
     }
