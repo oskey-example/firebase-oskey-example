@@ -5,7 +5,9 @@
 
 # firebase-oskey-example
 
-(c) Copyright OSkey SAS. MIT License.
+```
+Copyright (c) 2021-2023, OSkey SAS. MIT License.
+```
 
 ## About
 
