@@ -377,32 +377,15 @@ This project contains both script for deployment via Github Actions triggered
 when a new release is created on [Github](https://github.com) or a
 `npm run deploy` command to trigger the deployment manually.
 
-If you decide to go the manual way, you can deploy individually using:
-
-- `npm run deploy:firestre` to deploy the Cloud Firestore rules and indexes only
-- `npm run deploy:functions` to deploy the Cloud Functions only
-- `npm run deploy:hosting` to deploy the fronted end app only
-- `npm run deploy:storage` to deploy the Cloud Storage rules only
-
-If you decide to go the automated way and want to use the script as-is, you will
-need to create an `environment` and set the `FIREBASE_TOKEN` secret. To obtain
-the token, run the command `firebase login:ci`.
-
-Additionnaly, the secrets for the frontend app Firebase config must be set:
-`FIREBASE_API_KEY`, `FIREBASE_APP_ID` and `FIREBASE_MESSAGING_SENDER_ID`;
-
-**Important:** You will need to setup your own Firebase app for deploying, and
-adjust `.firebaserc`, `firebase.json` and
-`public/src/environments/environment.prod.ts` accordingly.
-
 ## Contributions
 
 Please find [here](./CONTRIBUTING.md) the instructions for contributions.
 
 ## Licenses
 
-Please find [here](./LICENSE) the detail on licensing.
+Please find [here](./LICENSE.md) the detail on licensing.
 
+```
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -410,3 +393,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
