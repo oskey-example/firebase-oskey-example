@@ -5,6 +5,13 @@
 
 FROM ghcr.io/gp-devenv/gp-firebase-devenv:22.04-18-1
 
+# >>> Force node version 1/2
+# Use node version 18.15.0
+# There is a incompatibility between Node v18.16.0 and firebase-tools v11
+# Comment when this is resolved
+ARG NODE_VERSION="v18.15.0"
+# <<< Force node version 1/2
+
 # Switch back to root
 USER root
 
@@ -12,26 +19,21 @@ USER root
 COPY ./firebase-cli /usr/bin
 RUN chmod ogu+x /usr/bin/firebase-cli
 
-# Install java
-# TODO: Remove when java 19 is set by default in gp-firebase-devenv
-RUN apt-get update && \
-    apt-get install -y -o DPkg::Options::=--force-confdef openjdk-19-jre-headless imagemagick && \
-    apt-get autoclean -y && \
-    apt-get autoremove -y
-
 # Switch back to vscode user
 USER vscode
 
+# >>> Force node version 2/2
+# Use nvm to instel node version set above
+# There is a incompatibility between Node v18.16.0 and firebase-tools v11
+# Comment when this is resolved
+RUN export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+    nvm install $NODE_VERSION && \
+    npm i -g npm@latest
+# <<< Force node version 2/2
+
 # Set worksapce
 WORKDIR /workspace
-
-# Install nvm and set node to 18.15.0
-# TODO: Remove when node > 18.15 support is added to firebase-tools and or moved
-# to gp-node-devenv
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
-    export NVM_DIR="$HOME/.nvm" && \
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
-    nvm install v18.15.0
 
 # Trust workspace
 RUN git config --global --add safe.directory /workspace
