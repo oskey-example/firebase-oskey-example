@@ -101,8 +101,12 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=`pwd`'/credentials.json' && \
           PATH=$PATH:./.devcontainer npm run deploy:ci:part1 && \
           unset GOOGLE_APPLICATION_CREDENTIALS
+        env:
+          GCLOUD_PROJECT: ${{ env.GCLOUD_PROJECT }}
       - name: Deploy to prod part 2
         run: |
           export GOOGLE_APPLICATION_CREDENTIALS=`pwd`'/credentials.json' && \
           PATH=$PATH:./.devcontainer npm run deploy:ci:part2 && \
           unset GOOGLE_APPLICATION_CREDENTIALS
+        env:
+          GCLOUD_PROJECT: ${{ env.GCLOUD_PROJECT }}
