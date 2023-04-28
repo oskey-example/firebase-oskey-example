@@ -11,102 +11,25 @@
 # SOFTWARE.
 #
 
-name: release
-
+name: Release creation
 on:
   release:
     types: [created]
-
 jobs:
+  build:
+    uses: ./.github/workflows/build.yml
   test:
-    name: Build & test firebase-oskey-example
-    runs-on: ubuntu-22.04
-    env:
-      FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
-    steps:
-      - name: Cache Firebase emulators
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.FIREBASE_EMULATORS_PATH }}
-          key: ${{ runner.os }}-firebase-emulators-${{
-            hashFiles('emulator-cache/**') }}
-        continue-on-error: true
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Node 18.15.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.15.0'
-          cache: 'npm'
-      - name: 'Firebase: Install dependencies'
-        run: npm ci
-      - name: 'Functions: Install dependencies, lint and build'
-        run: (cd functions; npm ci && npm run lint && npm run build)
-      - name: 'Test: Install dependencies and lint'
-        run: (cd test; npm ci && npm run lint)
-      - name: Install Java and ImageMagick
-        run: |
-          sudo apt-get update && \
-          sudo apt-get install -y -o DPkg::Options::=--force-confdef openjdk-19-jre-headless imagemagick
-      - name: Set google credentials
-        run: echo $GOOGLE_APPLICATION_CREDENTIALS_BASE64 | base64 -d > ./credentials.json
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
-      - name: Set to dev project
-        run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=`pwd`'/credentials.json' && \
-          PATH=$PATH:./.devcontainer firebase-cli use dev && \
-          unset GOOGLE_APPLICATION_CREDENTIALS
-      - name: Run test
-        run: PATH=$PATH:./.devcontainer npm run test:ci:json
-
-  deploy-firebase:
-    name: Deploy firebase-oskey-example to prod
+    uses: ./.github/workflows/test.yml
+    needs: build
+    secrets:
+      GOOGLE_APPLICATION_CREDENTIALS_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
+  deploy:
+    uses: ./.github/workflows/deploy_to_firebase.yml
     needs: test
-    runs-on: ubuntu-22.04
-    env:
-      FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
-    environment:
-      name: production
-      url: https://example.oskey.dev
-    steps:
-      - uses: actions/cache@v3
-        with:
-          path: ${{ env.FIREBASE_EMULATORS_PATH }}
-          key: ${{ runner.os }}-firebase-emulators-${{
-            hashFiles('emulator-cache/**') }}
-        continue-on-error: true
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Node 18.15.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.15.0'
-          cache: 'npm'
-      - name: 'Firebase: Install dependencies'
-        run: npm ci
-      - name: 'Functions: Install dependencies, lint and build'
-        run: (cd functions; npm ci && npm run lint && npm run build)
-      - name: Set google credentials
-        run: echo $GOOGLE_APPLICATION_CREDENTIALS_PROD_BASE64 | base64 -d > ./credentials.json
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS_PROD_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_PROD_BASE64 }}
-      - name: Set to prod project
-        run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=`pwd`'/credentials.json' && \
-          PATH=$PATH:./.devcontainer firebase-cli use prod && \
-          unset GOOGLE_APPLICATION_CREDENTIALS
-      - name: Deploy to prod part 1
-        run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=`pwd`'/credentials.json' && \
-          PATH=$PATH:./.devcontainer npm run deploy:ci:part1 && \
-          unset GOOGLE_APPLICATION_CREDENTIALS
-        env:
-          GCLOUD_PROJECT: ${{ vars.GCLOUD_PROJECT }}
-      - name: Deploy to prod part 2
-        run: |
-          export GOOGLE_APPLICATION_CREDENTIALS=`pwd`'/credentials.json' && \
-          PATH=$PATH:./.devcontainer npm run deploy:ci:part2 && \
-          unset GOOGLE_APPLICATION_CREDENTIALS
-        env:
-          GCLOUD_PROJECT: ${{ vars.GCLOUD_PROJECT }}
+    with:
+      GCLOUD_PROJECT: ${{ vars.GCLOUD_PROJECT }}
+      TARGET_ENVIRONMENT: production
+      TARGET_ENVIRONMENT_URL: https://example.oskey.dev
+    secrets:
+      GOOGLE_APPLICATION_CREDENTIALS_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_PROD_BASE64 }}
+# End
