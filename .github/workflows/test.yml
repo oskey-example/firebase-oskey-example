@@ -1,0 +1,75 @@
+#
+# firebase-oskey-example
+# Copyright (c) 2021-2023, OSkey SAS. MIT License.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+name: Test
+on:
+  workflow_call:
+    secrets:
+      GOOGLE_APPLICATION_CREDENTIALS_BASE64:
+        description: The content, base64 encoded, of the Google credentials
+        required: true
+jobs:
+  test:
+    name: Test firebase-oskey-example
+    runs-on: ubuntu-22.04
+    env:
+      FIREBASE_EMULATORS_PATH: ${{ github.workspace }}/emulator-cache
+    steps:
+      - name: Cache Firebase emulators
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.FIREBASE_EMULATORS_PATH }}
+          key: ${{ runner.os }}-firebase-emulators-${{
+            hashFiles('emulator-cache/**') }}
+        continue-on-error: true
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Node 18.15.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+          cache: 'npm'
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output
+      - name: Unpack
+        run: |
+          tar xvfz firebase-tools.tar.gz && \
+          rm -rf functions && tar xvfz functions.tar.gz
+      - name: 'Test: Install dependencies and lint'
+        run: (cd test; npm ci && npm run lint)
+      - name: Install Java and ImageMagick
+        run: |
+          sudo apt-get update && \
+          sudo apt-get install -y -o DPkg::Options::=--force-confdef openjdk-19-jre-headless imagemagick
+      - name: Set google credentials
+        run: echo $GOOGLE_APPLICATION_CREDENTIALS_BASE64 | base64 -d > ./credentials.json
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_BASE64: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_BASE64 }}
+      - name: Set to dev project
+        run: |
+          export GOOGLE_APPLICATION_CREDENTIALS=`pwd`'/credentials.json' && \
+          PATH=$PATH:./.devcontainer firebase-cli use dev && \
+          unset GOOGLE_APPLICATION_CREDENTIALS
+      - name: Run test
+        run: PATH=$PATH:./.devcontainer npm run test:ci:json
+      # - name: Upload artifact
+      #   continue-on-error: true
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: test-output
+      #     path: |
+      #       *.log
+      #       test_result.json
+# End
